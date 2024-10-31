@@ -5,22 +5,18 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the
- * name of this class or
- * the package after creating this project, you must also update the
- * build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-    /**
-     * This function is run when the robot is first started up and should be used
-     * for any
-     * initialization code.
-     */
+    private final PWMSparkMax left_drive = new PWMSparkMax(0);
+    private final PWMSparkMax right_drive = new PWMSparkMax(1);
+    private final DifferentialDrive robot_drive = new DifferentialDrive(left_drive::set, right_drive::set);
+    private final XboxController controller = new XboxController(0);
+    private final Timer timer = new Timer();
+
     @Override
     public void robotInit() {
     }
@@ -31,41 +27,21 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        timer.reset();
     }
 
     @Override
     public void autonomousPeriodic() {
-    }
+        if (timer.get() < 2.0) {
+            robot_drive.arcadeDrive(0.5, 0.0, false);
 
-    @Override
-    public void teleopInit() {
+        } else {
+            robot_drive.stopMotor();
+        }
     }
 
     @Override
     public void teleopPeriodic() {
-    }
-
-    @Override
-    public void disabledInit() {
-    }
-
-    @Override
-    public void disabledPeriodic() {
-    }
-
-    @Override
-    public void testInit() {
-    }
-
-    @Override
-    public void testPeriodic() {
-    }
-
-    @Override
-    public void simulationInit() {
-    }
-
-    @Override
-    public void simulationPeriodic() {
+        robot_drive.arcadeDrive(controller.getLeftY(), controller.getRightY(), true);
     }
 }
