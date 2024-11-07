@@ -1,47 +1,54 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 
 public class Robot extends TimedRobot {
-    private final PWMSparkMax left_drive = new PWMSparkMax(0);
-    private final PWMSparkMax right_drive = new PWMSparkMax(1);
-    private final DifferentialDrive robot_drive = new DifferentialDrive(left_drive::set, right_drive::set);
-    private final XboxController controller = new XboxController(0);
-    private final Timer timer = new Timer();
 
-    @Override
-    public void robotInit() {
-    }
+    private PWMTalonSRX left_motor_1 = new PWMTalonSRX(0);
+    private PWMTalonSRX left_motor_2 = new PWMTalonSRX(1);
+    private PWMTalonSRX right_motor_1 = new PWMTalonSRX(2);
+    private PWMTalonSRX right_motor_2 = new PWMTalonSRX(3);
 
-    @Override
-    public void robotPeriodic() {
-    }
+    private double start_time;
+
+    private Joystick joy_1 = new Joystick(0);
 
     @Override
     public void autonomousInit() {
-        timer.reset();
+        start_time = Timer.getFPGATimestamp();
     }
 
     @Override
     public void autonomousPeriodic() {
-        if (timer.get() < 2.0) {
-            robot_drive.arcadeDrive(0.5, 0.0, false);
+        double time = Timer.getFPGATimestamp();
 
+        if (time - start_time < 3) {
+            left_motor_1.set(0.6);
+            left_motor_2.set(0.6);
+            right_motor_1.set(-0.6);
+            right_motor_2.set(-0.6);
         } else {
-            robot_drive.stopMotor();
+            left_motor_1.set(0);
+            left_motor_2.set(0);
+            right_motor_1.set(0);
+            right_motor_2.set(0);
         }
     }
 
     @Override
     public void teleopPeriodic() {
-        robot_drive.arcadeDrive(controller.getLeftY(), controller.getRightY(), true);
+        double speed = -joy_1.getRawAxis(1) * 0.6;
+        double turn = joy_1.getRawAxis(1) * 0.3;
+
+        double left = speed + turn;
+        double right = speed - turn;
+
+        left_motor_1.set(left);
+        left_motor_2.set(left);
+        right_motor_1.set(-right);
+        right_motor_2.set(-right);
     }
 }
