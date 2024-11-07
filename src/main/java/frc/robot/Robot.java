@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,10 +25,10 @@ public class Robot extends TimedRobot {
      * initialization code.
      */
 
-    private Spark leftMotor1 = new Spark(0);
-    private Spark leftMotor2 = new Spark(1);
-    private Spark rightMotor1 = new Spark(2);
-    private Spark rightMotor2 = new Spark(3);
+    private PWMTalonSRX leftMotor1 = new PWMTalonSRX(0);
+    private PWMTalonSRX leftMotor2 = new PWMTalonSRX(1);
+    private PWMTalonSRX rightMotor1 = new PWMTalonSRX(2);
+    private PWMTalonSRX rightMotor2 = new PWMTalonSRX(3);
 
     private Joystick joy1 = new Joystick(0);
 
@@ -51,19 +51,18 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
         double time = Timer.getFPGATimestamp();
 
-if(time < 3) {
-        leftMotor1.set(0.6);
-        leftMotor2.set(0.6);
-        rightMotor1.set(-0.6);
-        rightMotor2.set(-0.6);
-    } else {
-        leftMotor1.set(0);
-        leftMotor2.set(0);
-        rightMotor1.set(0);
-        rightMotor2.set(0);
+        if (time - startTime < 3) {
+            leftMotor1.set(0.6);
+            leftMotor2.set(0.6);
+            rightMotor1.set(-0.6);
+            rightMotor2.set(-0.6);
+        } else {
+            leftMotor1.set(0);
+            leftMotor2.set(0);
+            rightMotor1.set(0);
+            rightMotor2.set(0);
+        }
     }
-}
-
 
     @Override
     public void teleopInit() {
@@ -76,7 +75,7 @@ if(time < 3) {
 
         double left = speed + turn;
         double right = speed - turn;
-        
+
         leftMotor1.set(left);
         leftMotor2.set(left);
         rightMotor1.set(-right);
