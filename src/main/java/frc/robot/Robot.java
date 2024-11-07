@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 
 public class Robot extends TimedRobot {
@@ -13,6 +14,8 @@ public class Robot extends TimedRobot {
 
   private Joystick joy1 = new Joystick(0);
 
+  private double startTime;
+
   @Override
   public void robotInit() {
 
@@ -21,6 +24,30 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
+  }
+
+  @Override
+  public void autonomousInit() {
+    startTime = Timer.getFPGATimestamp();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    double time = Timer.getFPGATimestamp();
+    System.out.println(time - startTime);
+
+    if (time - startTime < 3) {
+      leftMotor1.set(0.6);
+      leftMotor2.set(0.6);
+      rightMotor1.set(-0.6);
+      rightMotor2.set(-0.6);
+    } 
+    else {
+      leftMotor1.set(0);
+      leftMotor2.set(0);
+      rightMotor1.set(0);
+      rightMotor2.set(0);
+    }
   }
 
   @Override
