@@ -1,17 +1,20 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 
 public class Robot extends TimedRobot {
-    
-    private Spark leftMotor1 = new Spark(0);
-    private Spark leftMotor2 = new Spark(1);
-    private Spark rightMotor1 = new Spark(2);
-    private Spark rightMotor2 = new Spark(3);
 
-    private double startTime:
+    private PWMTalonSRX leftMotor1 = new PWMTalonSRX(0);
+    private PWMTalonSRX leftMotor2 = new PWMTalonSRX(1);
+    private PWMTalonSRX rightMotor1 = new PWMTalonSRX(2);
+    private PWMTalonSRX rightMotor2 = new PWMTalonSRX(3);
 
-    private joyStick joy1 = new Joystick(0);
+    private double startTime;
+
+    private Joystick joy1 = new Joystick(0);
 
     @Override
     public void robotInit() {
@@ -23,20 +26,19 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        startTime = Timer.getFPGATimestamp()
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
     public void autonomousPeriodic() {
-        double time = Timer.getFPGAYTimestamp();
+        double time = Timer.getFPGATimestamp();
 
-        if(time - startTime < 3) {
+        if (time - startTime < 3) {
             leftMotor1.set(0.6);
             leftMotor2.set(0.6);
             rightMotor1.set(-0.6);
             rightMotor2.set(-0.6);
-        }
-        else {
+        } else {
             leftMotor1.set(0);
             leftMotor2.set(0);
             rightMotor1.set(0);
@@ -46,13 +48,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        
+
     }
 
     @Override
     public void teleopPeriodic() {
-        double speed = -joy1.getRawAxis(1)*0.6;
-        double turn = joy1.getRawAxis(1)*0.3;
+        double speed = -joy1.getRawAxis(1) * 0.6;
+        double turn = joy1.getRawAxis(1) * 0.3;
 
         double left = speed + turn;
         double right = speed - turn;
@@ -62,14 +64,14 @@ public class Robot extends TimedRobot {
         rightMotor1.set(-right);
         rightMotor2.set(-right);
     }
-    
+
     @Override
     public void testInit() {
-        
+
     }
 
     @Override
     public void testPeriodic() {
-        
+
     }
-    }
+}
