@@ -3,14 +3,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
+import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 
 public class Robot extends TimedRobot {
 
-  private PWMTalonSRX leftMotor1 = new PWMTalonSRX(0);
-  private PWMTalonSRX leftMotor2 = new PWMTalonSRX(1);
-  private PWMTalonSRX rightMotor1 = new PWMTalonSRX(2);
-  private PWMTalonSRX rightMotor2 = new PWMTalonSRX(3);
+  private PWMVictorSPX leftMotor1 = new PWMVictorSPX(0);
+  private PWMVictorSPX leftMotor2 = new PWMVictorSPX(1);
+  private PWMVictorSPX rightMotor1 = new PWMVictorSPX(2);
+  private PWMVictorSPX rightMotor2 = new PWMVictorSPX(3);
 
   private Joystick joy1 = new Joystick(0);
 
